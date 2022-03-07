@@ -1,0 +1,43 @@
+Slide puzzle
+
+Start with a picture and create a puzzle of NxN where we can move scrambled pieces around to complete the puzzle
+
+research:
+Animate the squares
+Pictures in objects
+
+Objects:
+Board
+	Properties:
+	2D Array of pieces (Each piec)
+
+	Swap a piece
+Piece
+	Properties:
+	A picture
+	ID
+	
+
+Ideas:
+    Use the svelte transition like the tutorial for the moving list
+    Make picture objects
+
+Each square is an object primarily and then the svelte components are created rom the objects
+	If we give each object an ID (Puzzle piece number) then we can avoid the situation where the picture 	doesn’t follow the object
+
+Use a store for all of the objects
+Use objects to create the components
+Each svelte component has a picture
+Create a list of all the objects
+
+The cursor square (the black one) is just a place holder and has no behavior just a picture like any other
+
+The board knows where the border is and the square has to ask the board if it can move in a specific direction
+
+Have to click the tile you want to go to
+	This triggers an event that the board intercepts and decides if the black piece can move
+		the board looks at the piece’s neighbors and if any of them is the infamous black square it changes places
+
+BONUS POINTS:
+	If you click in same row or column then all the pieces between including the clicked one 
+
