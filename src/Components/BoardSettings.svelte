@@ -1,13 +1,14 @@
 <script lang="ts">
+    import type { Tweened } from "svelte/motion";
+
     export let pieces: number[],
-        displaySize: number,
+        displaySize: Tweened<number>,
         boardVisible: boolean,
         boardWidth: number,
         newBoard: (boardWidth: number) => number[],
         totalMoves: number,
         gameIsWon: boolean,
-        displaySizeMemory: number,
-        transitionLength: number;
+        displaySizeMemory: number;
 
     function changeBoardSize(operation: string) {
         boardVisible = false;
@@ -34,12 +35,12 @@
         <div class="displaySize">
             <button
                 on:click={() => {
-                    displaySize = displaySize + 100;
+                    $displaySize = $displaySize + 100;
                 }}>Zoom in</button
             >
             <button
                 on:click={() => {
-                    displaySize = displaySize - 100;
+                    $displaySize = $displaySize - 100;
                 }}>Zoom out</button
             >
         </div>
@@ -50,7 +51,7 @@
             pieces = newBoard(boardWidth);
             totalMoves = 0;
             gameIsWon = false;
-            displaySize = displaySizeMemory;
+            $displaySize = displaySizeMemory;
         }}>Reset game</button
     >
 </div>
