@@ -7,11 +7,14 @@
     import { fade } from "svelte/transition";
 
     let displaySize = 550;
+    let boardGap = 1;
+    $: adjustedDisplaySize = gameIsWon
+        ? displaySize
+        : displaySize + boardGap * 3; // accounts for gap
     let boardWidth = 4;
     let pieces = newBoard(boardWidth);
     let boardVisible = true;
     let totalMoves = 0;
-    let boardGap = 2;
     let gameIsWon = false;
 
     function newBoard(boardWidth: number) {
@@ -64,7 +67,9 @@
             pieces[blackIndex] = pieceID;
             totalMoves++;
             if (checkWin()) {
-                handleGameWin();
+                setTimeout(() => {
+                    handleGameWin();
+                }, 400);
             }
         }
     }
@@ -88,14 +93,18 @@
     // handleGameWin();
 </script>
 
-<div class="gameScreen">
+<div
+    class="gameScreen"
+    style={gameIsWon ? 'background-image: url("/frame.png");' : ""}
+>
     <MoveCounter {gameIsWon} {totalMoves} />
     <div
         class="board"
-        style="grid-template-columns: {'auto '.repeat(
-            boardWidth
-        )}; width: {displaySize}px; height: {displaySize}px;
-         gap: {boardGap}px;"
+        style="grid-template-columns: {'auto '.repeat(boardWidth)}; 
+            width: {adjustedDisplaySize}px; 
+            height: {adjustedDisplaySize}px;
+            gap: {boardGap}px;
+            {gameIsWon ? 'border: 3px black solid' : ''}"
     >
         {#if boardVisible}
             {#each pieces as ID (ID)}
@@ -140,12 +149,10 @@
         display: grid;
         grid-auto-columns: auto;
         gap: 1px;
-        border: 3px black solid;
         border-radius: 1px;
     }
 
     .gameScreen {
-        background-image: url("/frame.png");
         background-size: cover;
         height: 931px;
         width: 600px;
