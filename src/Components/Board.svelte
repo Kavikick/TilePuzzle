@@ -3,10 +3,14 @@
     import { flip } from "svelte/animate";
     import { quintOut } from "svelte/easing";
 
-    let boardWidth = 4;
-    let pieces = [...Array(boardWidth * boardWidth).keys()].sort(
-        () => Math.random() - 0.5
-    );
+    let boardWidth = 3;
+    let pieces = newBoard(boardWidth);
+
+    function newBoard(boardWidth: number) {
+        return [...Array(boardWidth * boardWidth).keys()].sort(
+            () => Math.random() - 0.5
+        );
+    }
 
     function getNeighborIDs(ID: number): number[] {
         const pieceIndex = pieces.indexOf(ID);
@@ -50,10 +54,11 @@
     }
 </script>
 
-<div class="board">
+<div class="board" style="grid-template-columns: {'auto '.repeat(boardWidth)};">
     {#each pieces as ID (ID)}
         <div animate:flip={{ delay: 10, duration: 400, easing: quintOut }}>
             <Piece
+                pictureWidth={600 / boardWidth}
                 {ID}
                 x={ID % boardWidth}
                 y={Math.floor(ID / boardWidth)}
@@ -73,7 +78,6 @@
         height: 600px;
         display: grid;
         grid-auto-columns: auto;
-        grid-template-columns: auto auto auto auto;
         gap: 1px;
     }
 </style>
