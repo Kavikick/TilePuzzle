@@ -45,6 +45,14 @@
                 }}>Zoom out</button
             >
         </div>
+        <button
+            on:click={() => {
+                pieces = pieces.sort((a, b) => {
+                    return a - b;
+                });
+                gameIsWon = true;
+            }}>Solve for me!</button
+        >
     {/if}
 
     <button

@@ -70,19 +70,21 @@
             pieces[blackIndex] = pieceID;
             totalMoves++;
             if (checkWin()) {
-                setTimeout(() => {
-                    handleGameWin();
-                }, 400);
+                gameIsWon = true;
             }
         }
     }
 
     function handleGameWin() {
-        gameIsWon = true;
         boardGap = 0;
         displaySizeMemory = $displaySize;
         $displaySize = 300;
     }
+    $: gameIsWon
+        ? setTimeout(() => {
+              handleGameWin();
+          }, 400)
+        : {};
 
     function checkWin(): boolean {
         const key = [...pieces.keys()];
@@ -95,13 +97,6 @@
     }
 </script>
 
-<button
-    on:click={() => {
-        pieces = pieces.sort((a, b) => {
-            return a - b;
-        });
-    }}
-/>
 <div class="gameScreen">
     {#if gameIsWon}
         <div
