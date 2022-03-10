@@ -5,26 +5,33 @@
 
     export let x: number,
         y: number,
-        pieceClass: string,
         ID: number,
-        pictureWidth: number;
+        pictureWidth: number,
+        isBlackPiece: Boolean,
+        displaySize: number;
 
     function clickEvent() {
         dispatch("clickEvent", ID);
     }
 </script>
 
-<div
-    style="background-position: {-pictureWidth * x}px {-pictureWidth *
-        y}px; width: {pictureWidth}px; height: {pictureWidth}px;"
-    class={pieceClass}
-    on:click={clickEvent}
-/>
+{#if isBlackPiece}
+    <div
+        class="blackPiece"
+        style="width: {pictureWidth}px; height: {pictureWidth}px;"
+    />
+{:else}
+    <div
+        style="background-position: {-pictureWidth * x}px {-pictureWidth *
+            y}px; width: {pictureWidth}px; height: {pictureWidth}px; background-size: {displaySize}px {displaySize}px;"
+        class={"picturePiece"}
+        on:click={clickEvent}
+    />
+{/if}
 
 <style>
     div.picturePiece {
         background-image: url("/download.jpeg");
-        background-size: 600px 600px;
     }
 
     div.blackPiece {

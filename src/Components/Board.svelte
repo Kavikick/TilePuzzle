@@ -3,7 +3,8 @@
     import { flip } from "svelte/animate";
     import { quintOut } from "svelte/easing";
 
-    let boardWidth = 3;
+    let displaySize = 550;
+    let boardWidth = 4;
     let pieces = newBoard(boardWidth);
 
     function newBoard(boardWidth: number) {
@@ -54,17 +55,21 @@
     }
 </script>
 
-<div class="board" style="grid-template-columns: {'auto '.repeat(boardWidth)};">
+<div
+    class="board"
+    style="grid-template-columns: {'auto '.repeat(
+        boardWidth
+    )}; width: {displaySize}px; height: {displaySize}px;"
+>
     {#each pieces as ID (ID)}
         <div animate:flip={{ delay: 10, duration: 400, easing: quintOut }}>
             <Piece
-                pictureWidth={600 / boardWidth}
+                {displaySize}
+                pictureWidth={displaySize / boardWidth}
                 {ID}
                 x={ID % boardWidth}
                 y={Math.floor(ID / boardWidth)}
-                pieceClass={ID === boardWidth * boardWidth - 1
-                    ? "blackPiece"
-                    : "picturePiece"}
+                isBlackPiece={ID === boardWidth * boardWidth - 1}
                 on:clickEvent={movePiece}
             />
         </div>
@@ -74,8 +79,6 @@
 <style>
     .board {
         background-color: aqua;
-        width: 600px;
-        height: 600px;
         display: grid;
         grid-auto-columns: auto;
         gap: 1px;
