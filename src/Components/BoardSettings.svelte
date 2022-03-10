@@ -4,7 +4,9 @@
         boardVisible: boolean,
         boardWidth: number,
         newBoard: (boardWidth: number) => number[],
-        totalMoves: number;
+        totalMoves: number,
+        gameIsWon: boolean,
+        displaySizeMemory;
 
     function changeBoardSize(operation: string) {
         boardVisible = false;
@@ -22,27 +24,32 @@
 </script>
 
 <div class="boardSettings">
-    <div class="boardSize">
-        Change board size
-        <button on:click={() => changeBoardSize("+")}>+</button>
-        <button on:click={() => changeBoardSize("-")}>-</button>
-    </div>
-    <div class="displaySize">
-        <button
-            on:click={() => {
-                displaySize = displaySize + 100;
-            }}>Zoom in</button
-        >
-        <button
-            on:click={() => {
-                displaySize = displaySize - 100;
-            }}>Zoom out</button
-        >
-    </div>
+    {#if !gameIsWon}
+        <div class="boardSize">
+            Change board size
+            <button on:click={() => changeBoardSize("+")}>+</button>
+            <button on:click={() => changeBoardSize("-")}>-</button>
+        </div>
+        <div class="displaySize">
+            <button
+                on:click={() => {
+                    displaySize = displaySize + 100;
+                }}>Zoom in</button
+            >
+            <button
+                on:click={() => {
+                    displaySize = displaySize - 100;
+                }}>Zoom out</button
+            >
+        </div>
+    {/if}
+
     <button
         on:click={() => {
             pieces = newBoard(boardWidth);
             totalMoves = 0;
+            gameIsWon = false;
+            displaySize = displaySizeMemory;
         }}>Reset game</button
     >
 </div>

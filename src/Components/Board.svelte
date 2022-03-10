@@ -7,6 +7,7 @@
     import { fade } from "svelte/transition";
 
     let displaySize = 550;
+    let displaySizeMemory: number;
     let boardGap = 1;
     $: adjustedDisplaySize = gameIsWon
         ? displaySize
@@ -77,6 +78,7 @@
     function handleGameWin() {
         gameIsWon = true;
         boardGap = 0;
+        displaySizeMemory = displaySize;
         displaySize = 300;
     }
 
@@ -89,8 +91,6 @@
         }
         return true;
     }
-
-    // handleGameWin();
 </script>
 
 <div
@@ -131,8 +131,6 @@
             {/each}
         {/if}
     </div>
-</div>
-{#if !gameIsWon}
     <BoardSettings
         bind:pieces
         bind:displaySize
@@ -140,8 +138,10 @@
         bind:boardWidth
         {newBoard}
         bind:totalMoves
+        bind:gameIsWon
+        {displaySizeMemory}
     />
-{/if}
+</div>
 
 <style>
     .board {
