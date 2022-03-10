@@ -28,15 +28,18 @@
     <div class="displaySize">
         <button
             on:click={() => {
-                displaySize = displaySize + 50;
+                displaySize = displaySize + 100;
             }}>Zoom in</button
         >
         <button
             on:click={() => {
-                displaySize = displaySize - 50;
+                displaySize = displaySize - 100;
             }}>Zoom out</button
         >
     </div>
+    <button on:click={() => (pieces = newBoard(boardWidth))}
+        >Scramble Board</button
+    >
 </div>
 
 <style>

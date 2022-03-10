@@ -58,13 +58,6 @@
     }
 </script>
 
-<BoardSettings
-    bind:pieces
-    bind:displaySize
-    bind:boardVisible
-    bind:boardWidth
-    {newBoard}
-/>
 <div
     class="board"
     style="grid-template-columns: {'auto '.repeat(
@@ -90,6 +83,13 @@
         {/each}
     {/if}
 </div>
+<BoardSettings
+    bind:pieces
+    bind:displaySize
+    bind:boardVisible
+    bind:boardWidth
+    {newBoard}
+/>
 
 <style>
     .board {
