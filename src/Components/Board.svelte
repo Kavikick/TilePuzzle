@@ -70,6 +70,25 @@
     }
 </script>
 
+<div class="boardSettings">
+    <div class="boardSize">
+        Change board size
+        <button on:click={() => changeBoardSize("+")}>+</button>
+        <button on:click={() => changeBoardSize("-")}>-</button>
+    </div>
+    <div class="displaySize">
+        <button
+            on:click={() => {
+                displaySize += 50;
+            }}>Zoom in</button
+        >
+        <button
+            on:click={() => {
+                displaySize -= 50;
+            }}>Zoom out</button
+        >
+    </div>
+</div>
 <div
     class="board"
     style="grid-template-columns: {'auto '.repeat(
@@ -94,10 +113,6 @@
             </div>
         {/each}
     {/if}
-</div>
-<div class="boardSettings">
-    <button on:click={() => changeBoardSize("+")}>+</button>
-    <button on:click={() => changeBoardSize("-")}>-</button>
 </div>
 
 <style>
