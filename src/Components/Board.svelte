@@ -9,6 +9,7 @@
     let boardWidth = 4;
     let pieces = newBoard(boardWidth);
     let boardVisible = true;
+    let totalMoves = 0;
 
     function newBoard(boardWidth: number) {
         return [...Array(boardWidth * boardWidth).keys()].sort(
@@ -54,10 +55,12 @@
             let blackIndex = pieces.indexOf(blackID);
             pieces[pieceIndex] = blackID;
             pieces[blackIndex] = pieceID;
+            totalMoves++;
         }
     }
 </script>
 
+<div class="moveCounter">Total moves = {totalMoves}</div>
 <div
     class="board"
     style="grid-template-columns: {'auto '.repeat(
@@ -89,6 +92,7 @@
     bind:boardVisible
     bind:boardWidth
     {newBoard}
+    bind:totalMoves
 />
 
 <style>
@@ -97,5 +101,9 @@
         display: grid;
         grid-auto-columns: auto;
         gap: 1px;
+    }
+
+    .moveCounter {
+        margin-bottom: 10px;
     }
 </style>

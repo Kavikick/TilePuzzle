@@ -3,7 +3,8 @@
         displaySize: number,
         boardVisible: boolean,
         boardWidth: number,
-        newBoard: (boardWidth: number) => number[];
+        newBoard: (boardWidth: number) => number[],
+        totalMoves: number;
 
     function changeBoardSize(operation: string) {
         boardVisible = false;
@@ -15,6 +16,7 @@
             }
             pieces = newBoard(boardWidth);
             boardVisible = true;
+            totalMoves = 0;
         }, 500);
     }
 </script>
@@ -37,8 +39,11 @@
             }}>Zoom out</button
         >
     </div>
-    <button on:click={() => (pieces = newBoard(boardWidth))}
-        >Scramble Board</button
+    <button
+        on:click={() => {
+            pieces = newBoard(boardWidth);
+            totalMoves = 0;
+        }}>Reset game</button
     >
 </div>
 
