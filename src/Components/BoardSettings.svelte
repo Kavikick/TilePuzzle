@@ -8,7 +8,8 @@
         newBoard: (boardWidth: number) => number[],
         totalMoves: number,
         gameIsWon: boolean,
-        displaySizeMemory: number;
+        displaySizeMemory: number,
+        boardGap: number;
 
     function changeBoardSize(operation: string) {
         boardVisible = false;
@@ -50,6 +51,7 @@
         on:click={() => {
             pieces = newBoard(boardWidth);
             totalMoves = 0;
+            boardGap = 1;
             gameIsWon = false;
             $displaySize = displaySizeMemory;
         }}>Reset game</button

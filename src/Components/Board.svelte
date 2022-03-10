@@ -25,13 +25,9 @@
         : $displaySize + boardGap * 3; // to account for gap
 
     function newBoard(boardWidth: number) {
-        if (false) {
-            return [...Array(boardWidth * boardWidth).keys()].sort(
-                () => Math.random() - 0.5
-            );
-        } else {
-            return [...Array(boardWidth * boardWidth).keys()];
-        }
+        return [...Array(boardWidth * boardWidth).keys()].sort(
+            () => Math.random() - 0.5
+        );
     }
 
     function getNeighborIDs(ID: number): number[] {
@@ -99,6 +95,13 @@
     }
 </script>
 
+<button
+    on:click={() => {
+        pieces = pieces.sort((a, b) => {
+            return a - b;
+        });
+    }}
+/>
 <div class="gameScreen">
     {#if gameIsWon}
         <div
@@ -150,6 +153,7 @@
             bind:totalMoves
             bind:gameIsWon
             {displaySizeMemory}
+            bind:boardGap
         />
     </div>
 </div>
