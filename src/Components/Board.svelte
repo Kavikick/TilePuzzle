@@ -1,46 +1,68 @@
 <script lang="ts">
     import Piece from "./Piece.svelte";
+    import { flip } from "svelte/animate";
+    import { quintOut } from "svelte/easing";
 
     let boardWidth = 4;
-    let pieces = [...Array(boardWidth * boardWidth).keys()];
+    let pieces = [...Array(boardWidth * boardWidth).keys()].sort(
+        () => Math.random() - 0.5
+    );
 
-    function movePiece(ID: number) {
-        // get neighbor IDs
-        let IDs = [];
-        IDs.push(ID - boardWidth); // above
-        IDs.push(ID + boardWidth); // above
-        IDs.push(ID - boardWidth); // above
-        IDs.push(ID + boardWidth); // above
+    function getNeighborIDs(ID: number): number[] {
+        const pieceIndex = pieces.indexOf(ID);
 
-        // Lint for out of bounds
-        IDs.filter((neighborID) => {
-            if (neighborID <= 0) {
-                return false;
-            } else if (neighborID > boardWidth * boardWidth - 1) {
-                return false;
-            } else if (Math.floor(ID / 4) === Math.floor(neighborID / 4)) {
-                return false;
-            } else {
-                return true;
+        // get neighbor IDs and bounds check
+        let neighborIndexes = [pieceIndex - 1, pieceIndex + 1].filter(
+            (neighborIndex) => {
+                return (
+                    Math.floor(pieceIndex / boardWidth) ===
+                    Math.floor(neighborIndex / boardWidth)
+                );
             }
-        });
+        );
+        neighborIndexes = neighborIndexes
+            .concat([pieceIndex - boardWidth, pieceIndex + boardWidth])
+            .filter((neighborIndex) => {
+                return (
+                    neighborIndex >= 0 &&
+                    neighborIndex < boardWidth * boardWidth
+                );
+            });
 
-        IDs.forEach((neighborID) => {});
-        // access DOM to find out if one of the neighbors is the black square
-        // swap the neighbor and piece's ID if the neighbor is the black square
+        // Convert indexes to IDs
+        let neighborIDs = [];
+        neighborIndexes.forEach((index) => {
+            neighborIDs.push(pieces[index]);
+        });
+        return neighborIDs;
+    }
+
+    function movePiece(event: CustomEvent) {
+        const pieceID = event.detail;
+        const blackID = boardWidth * boardWidth - 1;
+        const neighborIDs = getNeighborIDs(pieceID);
+        if (neighborIDs.includes(blackID)) {
+            let pieceIndex = pieces.indexOf(pieceID);
+            let blackIndex = pieces.indexOf(blackID);
+            pieces[pieceIndex] = blackID;
+            pieces[blackIndex] = pieceID;
+        }
     }
 </script>
 
 <div class="board">
     {#each pieces as ID (ID)}
-        <Piece
-            x={ID % 4}
-            y={Math.floor(ID / 4)}
-            pieceClass={ID === boardWidth * boardWidth - 1
-                ? "blackPiece"
-                : "picturePiece"}
-            on:click={movePiece}
-        />
+        <div animate:flip={{ delay: 10, duration: 400, easing: quintOut }}>
+            <Piece
+                {ID}
+                x={ID % boardWidth}
+                y={Math.floor(ID / boardWidth)}
+                pieceClass={ID === boardWidth * boardWidth - 1
+                    ? "blackPiece"
+                    : "picturePiece"}
+                on:clickEvent={movePiece}
+            />
+        </div>
     {/each}
 </div>
 

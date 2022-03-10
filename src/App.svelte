@@ -1,11 +1,9 @@
 <script lang="ts">
-	export let name: string;
-
 	import Board from "./Components/Board.svelte";
 </script>
 
 <main>
-	<h1>Slider Puzzle!</h1>
+	<h1>Can you unscramble the kitty?!</h1>
 	<Board />
 </main>
 
@@ -16,6 +14,8 @@
 		max-width: 240px;
 		margin: 0 auto;
 		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	@media (min-width: 640px) {
