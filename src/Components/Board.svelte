@@ -4,7 +4,9 @@
     import { quintOut } from "svelte/easing";
 
     let boardWidth = 4;
-    let pieces = [...Array(boardWidth * boardWidth).keys()];
+    let pieces = [...Array(boardWidth * boardWidth).keys()].sort(
+        () => Math.random() - 0.5
+    );
 
     function getNeighborIDs(ID: number): number[] {
         const pieceIndex = pieces.indexOf(ID);
