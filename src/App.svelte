@@ -1,6 +1,4 @@
 <script lang="ts">
-	export let name: string;
-
 	import Board from "./Components/Board.svelte";
 </script>
 

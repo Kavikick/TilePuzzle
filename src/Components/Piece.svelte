@@ -17,6 +17,11 @@
 />
 
 <style>
+    div {
+        width: 150px;
+        height: 150px;
+    }
+
     div.picturePiece {
         background-image: url("/download.jpeg");
         background-size: 600px 600px;

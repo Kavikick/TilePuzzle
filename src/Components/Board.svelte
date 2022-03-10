@@ -1,5 +1,7 @@
 <script lang="ts">
     import Piece from "./Piece.svelte";
+    import { flip } from "svelte/animate";
+    import { quintOut } from "svelte/easing";
 
     let boardWidth = 4;
     let pieces = [...Array(boardWidth * boardWidth).keys()];
@@ -48,15 +50,17 @@
 
 <div class="board">
     {#each pieces as ID (ID)}
-        <Piece
-            {ID}
-            x={ID % boardWidth}
-            y={Math.floor(ID / boardWidth)}
-            pieceClass={ID === boardWidth * boardWidth - 1
-                ? "blackPiece"
-                : "picturePiece"}
-            on:clickEvent={movePiece}
-        />
+        <div animate:flip={{ delay: 10, duration: 400, easing: quintOut }}>
+            <Piece
+                {ID}
+                x={ID % boardWidth}
+                y={Math.floor(ID / boardWidth)}
+                pieceClass={ID === boardWidth * boardWidth - 1
+                    ? "blackPiece"
+                    : "picturePiece"}
+                on:clickEvent={movePiece}
+            />
+        </div>
     {/each}
 </div>
 
