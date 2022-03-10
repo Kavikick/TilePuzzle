@@ -10,11 +10,17 @@
     let pieces = newBoard(boardWidth);
     let boardVisible = true;
     let totalMoves = 0;
+    let boardGap = 2;
+    let gameIsWon = false;
 
     function newBoard(boardWidth: number) {
-        return [...Array(boardWidth * boardWidth).keys()].sort(
-            () => Math.random() - 0.5
-        );
+        if (false) {
+            return [...Array(boardWidth * boardWidth).keys()].sort(
+                () => Math.random() - 0.5
+            );
+        } else {
+            return [...Array(boardWidth * boardWidth).keys()];
+        }
     }
 
     function getNeighborIDs(ID: number): number[] {
@@ -56,16 +62,36 @@
             pieces[pieceIndex] = blackID;
             pieces[blackIndex] = pieceID;
             totalMoves++;
+            if (checkWin()) {
+                handleWin();
+            }
         }
+    }
+
+    function checkWin(): boolean {
+        const key = [...pieces.keys()];
+        for (let i = 0; i < pieces.length; i++) {
+            if (pieces[i] !== key[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function handleWin() {
+        gameIsWon = true;
+        boardGap = 0;
     }
 </script>
 
-<div class="moveCounter">Total moves = {totalMoves}</div>
+<div class="moveCounter">
+    {gameIsWon ? "Total" : "Current"} Moves : {totalMoves}
+</div>
 <div
     class="board"
     style="grid-template-columns: {'auto '.repeat(
         boardWidth
-    )}; width: {displaySize}px; height: {displaySize}px;"
+    )}; width: {displaySize}px; height: {displaySize}px; gap: {boardGap}px;"
 >
     {#if boardVisible}
         {#each pieces as ID (ID)}
@@ -86,14 +112,16 @@
         {/each}
     {/if}
 </div>
-<BoardSettings
-    bind:pieces
-    bind:displaySize
-    bind:boardVisible
-    bind:boardWidth
-    {newBoard}
-    bind:totalMoves
-/>
+{#if !gameIsWon}
+    <BoardSettings
+        bind:pieces
+        bind:displaySize
+        bind:boardVisible
+        bind:boardWidth
+        {newBoard}
+        bind:totalMoves
+    />
+{/if}
 
 <style>
     .board {
