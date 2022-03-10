@@ -1,6 +1,7 @@
 <script lang="ts">
     import Piece from "./Piece.svelte";
     import BoardSettings from "./BoardSettings.svelte";
+    import MoveCounter from "./MoveCounter.svelte";
     import { flip } from "svelte/animate";
     import { quintOut } from "svelte/easing";
     import { fade } from "svelte/transition";
@@ -63,9 +64,15 @@
             pieces[blackIndex] = pieceID;
             totalMoves++;
             if (checkWin()) {
-                handleWin();
+                handleGameWin();
             }
         }
+    }
+
+    function handleGameWin() {
+        gameIsWon = true;
+        boardGap = 0;
+        displaySize = 300;
     }
 
     function checkWin(): boolean {
@@ -78,39 +85,43 @@
         return true;
     }
 
-    function handleWin() {
-        gameIsWon = true;
-        boardGap = 0;
-    }
+    // handleGameWin();
 </script>
 
-<div class="moveCounter">
-    {gameIsWon ? "Total" : "Current"} Moves : {totalMoves}
-</div>
-<div
-    class="board"
-    style="grid-template-columns: {'auto '.repeat(
-        boardWidth
-    )}; width: {displaySize}px; height: {displaySize}px; gap: {boardGap}px;"
->
-    {#if boardVisible}
-        {#each pieces as ID (ID)}
-            <div
-                animate:flip={{ delay: 10, duration: 400, easing: quintOut }}
-                transition:fade
-            >
-                <Piece
-                    {displaySize}
-                    pictureWidth={displaySize / boardWidth}
-                    {ID}
-                    x={ID % boardWidth}
-                    y={Math.floor(ID / boardWidth)}
-                    isBlackPiece={ID === boardWidth * boardWidth - 1}
-                    on:clickEvent={movePiece}
-                />
-            </div>
-        {/each}
-    {/if}
+<div class="gameScreen">
+    <MoveCounter {gameIsWon} {totalMoves} />
+    <div
+        class="board"
+        style="grid-template-columns: {'auto '.repeat(
+            boardWidth
+        )}; width: {displaySize}px; height: {displaySize}px;
+         gap: {boardGap}px;"
+    >
+        {#if boardVisible}
+            {#each pieces as ID (ID)}
+                <div
+                    animate:flip={{
+                        delay: 10,
+                        duration: 400,
+                        easing: quintOut,
+                    }}
+                    transition:fade
+                >
+                    <Piece
+                        {displaySize}
+                        pictureWidth={displaySize / boardWidth}
+                        {ID}
+                        x={ID % boardWidth}
+                        y={Math.floor(ID / boardWidth)}
+                        isBlackPiece={gameIsWon
+                            ? false
+                            : ID === boardWidth * boardWidth - 1}
+                        on:clickEvent={gameIsWon ? () => {} : movePiece}
+                    />
+                </div>
+            {/each}
+        {/if}
+    </div>
 </div>
 {#if !gameIsWon}
     <BoardSettings
@@ -129,9 +140,17 @@
         display: grid;
         grid-auto-columns: auto;
         gap: 1px;
+        border: 3px black solid;
+        border-radius: 1px;
     }
 
-    .moveCounter {
-        margin-bottom: 10px;
+    .gameScreen {
+        background-image: url("/frame.png");
+        background-size: cover;
+        height: 931px;
+        width: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>

@@ -31,7 +31,7 @@
 
 <style>
     div.picturePiece {
-        background-image: url("/download.jpeg");
+        background-image: url("/Cat.jpeg");
     }
 
     div.blackPiece {
