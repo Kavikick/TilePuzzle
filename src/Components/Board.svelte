@@ -7,7 +7,7 @@
     import { fade } from "svelte/transition";
     import { tweened } from "svelte/motion";
 
-    let displaySizeMemory: number;
+    let displaySizeMemory = 550;
     let boardGap = 1;
     let transitionLength = 1;
     let boardWidth = 4;
