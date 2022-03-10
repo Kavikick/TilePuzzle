@@ -17,6 +17,7 @@
     let boardVisible = true;
     let totalMoves = 0;
     let gameIsWon = false;
+    let transitionLength = 1;
 
     function newBoard(boardWidth: number) {
         if (false) {
@@ -70,7 +71,7 @@
             if (checkWin()) {
                 setTimeout(() => {
                     handleGameWin();
-                }, 400);
+                }, 0);
             }
         }
     }
@@ -97,7 +98,7 @@
     class="gameScreen"
     style={gameIsWon ? 'background-image: url("/frame.png");' : ""}
 >
-    <MoveCounter {gameIsWon} {totalMoves} />
+    <MoveCounter {gameIsWon} {totalMoves} {transitionLength} />
     <div
         class="board"
         style="grid-template-columns: {'auto '.repeat(boardWidth)}; 
@@ -140,6 +141,7 @@
         bind:totalMoves
         bind:gameIsWon
         {displaySizeMemory}
+        {transitionLength}
     />
 </div>
 

@@ -6,7 +6,8 @@
         newBoard: (boardWidth: number) => number[],
         totalMoves: number,
         gameIsWon: boolean,
-        displaySizeMemory;
+        displaySizeMemory: number,
+        transitionLength: number;
 
     function changeBoardSize(operation: string) {
         boardVisible = false;
